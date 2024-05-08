@@ -1,8 +1,9 @@
+import Login from './components/Login/Login'
 export default function App() {
 
   return (
-    <>
-      <h1>DCApp</h1>
-    </>
+    <div className='h-screen w-full'>
+      <Login />
+    </div>
   )
 }
