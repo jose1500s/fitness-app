@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Layout from './components/Auth/Layout.tsx'
 import Login from './components/Auth/Login.tsx'
 import Register from './components/Auth/Register.tsx'
+import Index from './components/Main/index.tsx'
 import './index.css'
 
 const router = createBrowserRouter([
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       }
     ]
   },
+  {
+    path: '/home',
+    element: <Index />,
+  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

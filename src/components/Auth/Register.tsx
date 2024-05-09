@@ -1,14 +1,13 @@
 import { useState } from 'react';
 import { Steps, Input, Space, Button, InputNumber } from 'antd';
 import { Link } from "react-router-dom"
+import { supabase } from '../../supabase/client';
 
 import {
   UserOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
   LockOutlined,
-  GoogleOutlined,
-  XOutlined,
   MailOutlined,
   ArrowRightOutlined
 } from '@ant-design/icons';
@@ -16,9 +15,15 @@ import {
 export default function Register() {
 
   const [current, setCurrent] = useState(0);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [peso, setPeso] = useState(0);
+  const [altura, setAltura] = useState(0);
+  const [edad, setEdad] = useState(0);
 
   const onChange = (value: number) => {
-    console.log('onChange:', value);
     setCurrent(value);
   };
 
@@ -38,9 +43,10 @@ export default function Register() {
     setCurrent(current + 1);
   }
 
-  // todo, funcion que mande los datos del primer y segundo form a la base de datos
-  const handleSubmit = () => {
-    console.log('enviando datos...');
+  const handleSubmit = async () => {
+    const { error } = await supabase
+      .from('countries')
+      .insert({ id: 1, name: 'Denmark' })
   }
 
   return (
@@ -60,6 +66,8 @@ export default function Register() {
                 size="large"
                 type='text'
                 prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                onChange={(e) => setName(e.target.value)}
+                value={name}
               />
 
               <Input
@@ -68,6 +76,8 @@ export default function Register() {
                 size="large"
                 type='email'
                 prefix={<MailOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
+                onChange={(e) => setEmail(e.target.value)}
+                value={email}
               />
 
               <Space direction="vertical" className="mt-4">
@@ -76,6 +86,8 @@ export default function Register() {
                   placeholder="Ingresa tu contraseña"
                   prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                   iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                 />
               </Space>
 
@@ -85,6 +97,8 @@ export default function Register() {
                   placeholder="Confirma tu contraseña"
                   prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
                   iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={confirmPassword}
                 />
               </Space>
 
@@ -97,7 +111,7 @@ export default function Register() {
               >
                 Continuar <ArrowRightOutlined />
               </Button>
-              
+
             </form>
             <div className="relative mt-5 text-center">
               <p className="text-white">¿Ya tienes una cuenta?</p>
@@ -116,6 +130,8 @@ export default function Register() {
                 defaultValue={0}
                 name='peso'
                 id='peso'
+                onChange={(value) => setPeso(value ?? 0)}
+                value={peso}
               />
 
               <label htmlFor="altura" className='text-white text-lg mt-4'>Altura (Centimetros)</label>
@@ -127,6 +143,8 @@ export default function Register() {
                 defaultValue={0}
                 name='altura'
                 id='altura'
+                onChange={(value) => setAltura(value ?? 0)}
+                value={altura}
               />
 
               <label htmlFor="edad" className='text-white text-lg mt-4'>Edad</label>
@@ -138,6 +156,8 @@ export default function Register() {
                 defaultValue={0}
                 name='edad'
                 id='edad'
+                onChange={(value) => setEdad(value ?? 0)}
+                value={edad}
               />
 
               <Button type="primary" block className="mt-4 font-bold" size="large"
