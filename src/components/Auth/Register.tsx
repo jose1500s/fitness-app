@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Steps, Input, Space, Button, InputNumber } from 'antd';
 import { Link } from "react-router-dom"
 import { supabase } from '../../supabase/client';
@@ -27,6 +27,7 @@ export default function Register() {
     setCurrent(value);
   };
 
+
   const items = [
     {
       title: 'Datos de acceso',
@@ -38,15 +39,28 @@ export default function Register() {
     },
   ];
 
-  //todo, funcion que guarde los datos del primer form
   const nextStep = () => {
     setCurrent(current + 1);
   }
 
-  const handleSubmit = async () => {
-    const { error } = await supabase
-      .from('countries')
-      .insert({ id: 1, name: 'Denmark' })
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const { data, error } = await supabase.auth.signUp(
+        {
+          email: 'example@email.com',
+          password: 'example-password',
+          options: {
+            emailRedirectTo: 'http://localhost:5173/home'
+          }
+        }
+      )
+      console.log(data, error)
+    } catch (error) {
+      console.log('Error al registrar', error)
+    }
+
+
   }
 
   return (
@@ -120,7 +134,7 @@ export default function Register() {
           </div>
         ) : (
           <div className='w-full h-auto'>
-            <form action="" className="flex flex-col justify-center mt-4 text-white z-20">
+            <form onSubmit={handleSubmit} className="flex flex-col justify-center mt-4 text-white z-20">
               <label htmlFor="peso" className='text-white text-lg'>Peso</label>
               <InputNumber
                 className='w-full mt-2'
@@ -160,8 +174,12 @@ export default function Register() {
                 value={edad}
               />
 
-              <Button type="primary" block className="mt-4 font-bold" size="large"
-                onClick={handleSubmit}
+              <Button
+                type="primary"
+                block
+                className="mt-4 font-bold"
+                size="large"
+                htmlType='submit'
               >
                 Registrarse
               </Button>

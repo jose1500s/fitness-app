@@ -3,13 +3,12 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   LockOutlined,
-  GoogleOutlined,
-  XOutlined,
 } from '@ant-design/icons';
 import { Input, Space, Button } from 'antd';
 import { Link } from "react-router-dom"
 
 export default function BackgroundBeamsDemo() {
+
 
   return (
     <>
@@ -33,7 +32,7 @@ export default function BackgroundBeamsDemo() {
         <Button type="primary" block className="mt-4 font-bold" size="large">
           Iniciar sesión
         </Button>
-       
+
       </form>
       <div className="relative mt-5 bottom-4 w-full text-center">
         <p className="text-white">¿Aún no tienes cuenta?</p>
