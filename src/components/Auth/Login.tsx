@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   UserOutlined,
   EyeInvisibleOutlined,
@@ -6,9 +7,14 @@ import {
 } from '@ant-design/icons';
 import { Input, Space, Button } from 'antd';
 import { Link } from "react-router-dom"
+import { useIsLogged } from '../Hooks/useIsLogged.ts'
 
 export default function BackgroundBeamsDemo() {
+  const { checkUser } = useIsLogged()
 
+  useEffect(() => {
+    checkUser()
+  }, [])
 
   return (
     <>

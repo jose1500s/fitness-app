@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Steps, Input, Space, Button, InputNumber } from 'antd';
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { supabase } from '../../supabase/client';
 
 import {
@@ -22,11 +22,13 @@ export default function Register() {
   const [peso, setPeso] = useState(0);
   const [altura, setAltura] = useState(0);
   const [edad, setEdad] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate()
 
   const onChange = (value: number) => {
     setCurrent(value);
   };
-
 
   const items = [
     {
@@ -46,22 +48,32 @@ export default function Register() {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
-      const { data, error } = await supabase.auth.signUp(
+      setLoading(true)
+      await supabase.auth.signUp(
         {
-          email: 'example@email.com',
-          password: 'example-password',
+          email: email,
+          password: password,
           options: {
-            emailRedirectTo: 'http://localhost:5173/home'
-          }
+            data: {
+              name: name,
+              peso: peso,
+              altura: altura,
+              edad: edad,
+            }
+          },
         }
       )
-      console.log(data, error)
+      setTimeout(() => {
+        navigate('/home')
+        setLoading(false)
+
+      }, 1200)
     } catch (error) {
-      console.log('Error al registrar', error)
+      alert(error)
     }
-
-
   }
+
+
 
   return (
     <div className='w-2/3 md:w-1/3'>
@@ -180,6 +192,7 @@ export default function Register() {
                 className="mt-4 font-bold"
                 size="large"
                 htmlType='submit'
+                loading={loading}
               >
                 Registrarse
               </Button>
